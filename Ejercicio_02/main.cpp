@@ -58,6 +58,7 @@ void InsertarSiguiente(Nodo *&n, int x)
     return;
 }
 
+
 void unirListas(Nodo *listaA, Nodo *listaB, Nodo *&listaC)
 {
 
@@ -71,6 +72,29 @@ void unirListas(Nodo *listaA, Nodo *listaB, Nodo *&listaC)
     {
         InsertarSiguiente(listaC, listaB->info);
         listaB = listaB->sgte;
+    }
+}
+
+//Ordenamiento burbuja para ordenar la lista
+void ordenarLista(Nodo *&lista)
+{
+    Nodo *paux = lista;
+    Nodo *siguiente = NULL;
+    int aux;
+    while (paux)
+    {
+        siguiente = paux->sgte;
+        while (siguiente)
+        {
+            if (paux->info > siguiente->info)
+            {
+                aux = paux->info;
+                paux->info = siguiente->info;
+                siguiente->info = aux;
+            }
+            siguiente = siguiente->sgte;
+        }
+        paux = paux->sgte;
     }
 }
 
@@ -102,6 +126,8 @@ int main()
     unirListas(listaA, listaB, listaC);
 
     Nodo *aux = listaC;
+
+    ordenarLista(aux);
 
     while (aux)
     {

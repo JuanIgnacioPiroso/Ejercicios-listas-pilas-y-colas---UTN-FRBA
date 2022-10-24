@@ -35,15 +35,7 @@ struct NodoAlumno
     NodoMateria *sublistaMaterias = NULL;
 };
 
-NodoAlumno *ObtenerSiguiente(NodoAlumno *n)
-
-{
-    if (n)
-        return n->sgte;
-    else
-        return NULL;
-}
-
+/* ===========================================================  */
 void agregarNodo(NodoAlumno *&listaAlumno, Alumno a)
 {
     NodoAlumno *nuevo = new NodoAlumno();
@@ -69,41 +61,45 @@ void agregarNodo(NodoAlumno *&listaAlumno, Alumno a)
 
     return;
 }
-void MostrarLista(NodoAlumno *milista)
+/* ===========================================================  */
+
+/* ===========================================================  */
+void mostrarListaConSublista(NodoAlumno *listaAlumno)
 {
-    while (milista)
+    NodoAlumno *aux = listaAlumno;
+    NodoMateria *auxMateria = NULL;
+
+    while (aux != NULL)
     {
-        cout << "LECTURA DESDE LA LISTA " << endl;
-        cout << milista->info.nombre << endl;
-        cout << milista->info.apellido << endl;
-        cout << milista->info.dni << endl;
-        cout << milista->info.legajo << endl;
-        cout << milista->info.codCarrera << endl;
-        cout << "-----------------------" << endl;
+        cout << "==========================================================" << endl;
+        cout << "Nombre: " << aux->info.nombre << endl;
+        cout << "Apellido: " << aux->info.apellido << endl;
+        cout << "DNI: " << aux->info.dni << endl;
+        cout << "Legajo: " << aux->info.legajo << endl;
+        cout << "Codigo de Carrera: " << aux->info.codCarrera << endl;
 
-        if (milista->sublistaMaterias)
-        {
-            while (milista->sublistaMaterias)
-            {
-                cout << "MATERIA: " << endl;
-                cout << milista->sublistaMaterias->info.nombreMateria << endl;
-                cout << milista->sublistaMaterias->info.fechaAprobacion << endl;
-                cout << milista->sublistaMaterias->info.nota << endl;
-                cout << milista->sublistaMaterias->info.libro << endl;
-                cout << milista->sublistaMaterias->info.folio << endl;
+        auxMateria = aux->sublistaMaterias;
 
-                milista->sublistaMaterias = milista->sublistaMaterias->sgte;
-            }
-        }
-        else
+        while (auxMateria != NULL)
         {
-            cout << "El alumno no tiene materias agregadas" << endl;
+            cout << "==========================================================" << endl;
+            cout << "Nombre de Materia: " << auxMateria->info.nombreMateria << endl;
+            cout << "Fecha de Aprobacion: " << auxMateria->info.fechaAprobacion << endl;
+            cout << "Legajo de Alumno: " << auxMateria->info.legajoAlumno << endl;
+            cout << "Nota: " << auxMateria->info.nota << endl;
+            cout << "Libro: " << auxMateria->info.libro << endl;
+            cout << "Folio: " << auxMateria->info.folio << endl;
+            cout << "==========================================================" << endl;
+
+            auxMateria = auxMateria->sgte;
         }
 
-        milista = milista->sgte;
+        aux = aux->sgte;
     }
 }
+/* ===========================================================  */
 
+/* ===========================================================  */
 void agregarSublista(NodoAlumno *listaAlumno, Materia m)
 {
     NodoMateria *nuevo = new NodoMateria();
@@ -130,7 +126,9 @@ void agregarSublista(NodoAlumno *listaAlumno, Materia m)
 
     return;
 }
+/* ===========================================================  */
 
+/* ===========================================================  */
 void agregarMateria(NodoAlumno *listaAlumno, char ruta_archivo[])
 {
     FILE *p;
@@ -159,7 +157,9 @@ void agregarMateria(NodoAlumno *listaAlumno, char ruta_archivo[])
     }
     fclose(p);
 }
+/* ===========================================================  */
 
+/* ===========================================================  */
 void insertarEnLista(char ruta_archivo[], NodoAlumno *&listaAlumno)
 {
     Alumno a;
@@ -173,12 +173,14 @@ void insertarEnLista(char ruta_archivo[], NodoAlumno *&listaAlumno)
 
     fclose(archivoAlumnos);
 }
+/* ===========================================================  */
 
 int main()
 {
 
     /* CARGA DE ARCHIVO */
-    /*
+
+    /* ===========================================================  */
     FILE *arch = fopen("alumnos.dat", "wb");
     Alumno alumn;
 
@@ -223,30 +225,10 @@ int main()
 
     fclose(arch);
     fclose(arch2);
-    */
-    /*
-            arch = fopen("alumnos.dat", "rb");
-            arch2 = fopen("materias.dat", "rb");
+    
+     /* ===========================================================  */
 
-            while (fread(&alumn, sizeof(Alumno), 1, arch) && fread(&mat, sizeof(Materia), 1, arch2))
-            {
-                cout << "Nombre: " << alumn.nombre << endl;
-                cout << "Apellido: " << alumn.apellido << endl;
-                cout << "DNI: " << alumn.dni << endl;
-                cout << "Legajo:  " << alumn.legajo << endl;
-                cout << "Codigo de carrera: " << alumn.codCarrera << endl;
-                cout << "MATERIA: " << endl;
-                cout << "Legajo alumno: " << mat.legajoAlumno << endl;
-                cout << "Nombre de Materia: " << mat.nombreMateria << endl;
-                cout << "Fecha de aprobacion: " << mat.fechaAprobacion << endl;
-                cout << "Nota: " << mat.nota << endl;
-                cout << "Libro: " << mat.libro << endl;
-                cout << "Folio: " << mat.folio << endl;
-                cout << "-----------------" << endl;
-            }
-            fclose(arch);
-            fclose(arch2);
-*/
+     /* FIN CARGA DE ARCHIVO */
 
     NodoAlumno *listaAlumno = NULL;
 
@@ -254,5 +236,5 @@ int main()
 
     agregarMateria(listaAlumno, "materias.dat");
 
-    MostrarLista(listaAlumno);
+    mostrarListaConSublista(listaAlumno);
 }
